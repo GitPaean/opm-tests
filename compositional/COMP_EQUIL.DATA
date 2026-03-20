@@ -4,8 +4,11 @@
 -- License: http://opendatacommons.org/licenses/dbcl/1.0/
 
 -- Copyright (C) 2023 TNO
+-- Copyright (C) 2024, SINTEF Digital, TNO
 
--- Test case for CO2STORE in combination with GASWAT.
+-- Three-component compositional case with equilibration.
+-- Components are CO2, methane, and decane (from 1D_COMP.DATA).
+-- CO2 is injected through the injector.
 ----------------------------------------------------------------------------
 RUNSPEC
 ---------------------------------------------------------------------------- 
@@ -16,11 +19,11 @@ START
  
 METRIC
 
-CO2STORE
-
+OIL
+GAS
 
 COMPS
-2
+3
 /
 
 DIMENS
@@ -39,7 +42,6 @@ WELLDIMS
 2 30 1 1/
  
 
-GASWAT
 UNIFOUT
 UNIFIN
 
@@ -80,54 +82,106 @@ ROCK
 
 
 RTEMP
-  80 
+  150 
 /
 
 
+EOS
+PR /
+
 NCOMPS
 
-       2
+       3
 /
 CNAMES
 
    'CO2'
-   'H2O'
+   'METHANE'
+   'DECANE'
 
 /
 
+BIC
+-- Binary interaction coefficients (upper triangle):
+-- CO2-METHANE, CO2-DECANE, METHANE-DECANE
+0
+0
+0
+/
+
+ACF
+0.22394
+0.01142
+0.4884
+/
+
+PCRIT
+73.773
+45.992
+21.03
+/
+
+TCRIT
+304.128
+190.564
+617.7
+/
+
+MW
+44.00
+16.04
+142.28
+/
+
+VCRIT
+0.09412
+0.09863
+0.60980
+/
+
+STCOND
+15.0 1.0 /
+
 ZMFVD
--- depth  CO2  H2O  
- 2000   0 1.0   
- 2100 0 1.0   / 
+-- depth  CO2  METHANE  DECANE  (matching initial composition from 1D_COMP.DATA)
+  2000   0.1  0.3  0.6
+  2100   0.1  0.3  0.6 /
 
 
 --- relative permeabilities
 
-WSF
-0.20  0.0  
-0.40  0.1  
-0.80  0.5  
-1.0   1.0  
-/
-
-GSF 
-0   0.0  0.0 
-0.08   0.001  0.0 
-0.17  0.01   0.0 
-0.35  0.05     0.0  
-0.53  0.20   0.0 
-0.62  0.35   0.0 
-0.65  0.39   0.0 
-0.71  0.56   0.0 
-0.80   1.0    0.0 
+SGOF
+-- Sg    Krg    Kro    Pcgo
+0.0000 0.0000 1.0000 0.0000
+0.0500 0.0025 0.9025 0.0000
+0.1000 0.0100 0.8100 0.0000
+0.1500 0.0225 0.7225 0.0000
+0.2000 0.0400 0.6400 0.0000
+0.2500 0.0625 0.5625 0.0000
+0.3000 0.0900 0.4900 0.0000
+0.3500 0.1225 0.4225 0.0000
+0.4000 0.1600 0.3600 0.0000
+0.4500 0.2025 0.3025 0.0000
+0.5000 0.2500 0.2500 0.0000
+0.5500 0.3025 0.2025 0.0000
+0.6000 0.3600 0.1600 0.0000
+0.6500 0.4225 0.1225 0.0000
+0.7000 0.4900 0.0900 0.0000
+0.7500 0.5625 0.0625 0.0000
+0.8000 0.6400 0.0400 0.0000
+0.8500 0.7225 0.0225 0.0000
+0.9000 0.8100 0.0100 0.0000
+0.9500 0.9025 0.0025 0.0000
+1.0000 1.0000 0.0000 0.0000
 /
 
 SOLUTION ===============================================================
 
 EQUIL
--- system is saturated with water
+-- datum  datum   WOC    WOC    GOC    GOC
+-- depth  press   depth  Pcow   depth  Pcog
 
-   2000     200    1800      0      1800     0     /
+   2000     200    1800      0      2100     0     /
 
 
 RPTRST
@@ -137,33 +191,6 @@ SUMMARY  ===========================================================
 
 ALL
 
---WXMF
---'*' 1 /
---'*' 2 /
---/
---WYMF
---'*' 1 /
---'*' 2 /
---/
---WZMF
---'*' 1 /
---'*' 2 /
---/
---WCGMR
---'*' 1 /
---'*' 2 /
---/
---WCOMR
---'*' 1 /
---'*' 2 /
---/
-
-FWCD
-
-FGCDI
-
-FGCDM
-
 
 SCHEDULE  ===============================================
 
@@ -171,7 +198,7 @@ RPTRST
 	'BASIC=2' 'ALLPROPS'/
 
 WELLSTRE
-'C02STREAM' 1.0 0.0   /
+'CO2STREAM' 1.0 0.0 0.0  /
 /
 
 WELSPECS
@@ -184,7 +211,7 @@ COMPDAT
 /
 
 WINJGAS
- INJ1 STREAM C02STREAM /
+ INJ1 STREAM CO2STREAM /
 /
 
 WCONINJE
