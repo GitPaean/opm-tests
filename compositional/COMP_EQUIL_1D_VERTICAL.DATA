@@ -170,7 +170,7 @@ EQUIL
 -- datum  datum   WOC    WOC    GOC    GOC
 -- depth  press   depth  Pcow   depth  Pcog
 
-   2000     200    1800   0      2050     0     /
+   2010     200    2300   0      2050     0     /
 
 
 
@@ -205,8 +205,8 @@ VOIL
 TSTEP
     0.0100
     0.0200
-    0.0400
-    0.0400
+    -- 0.0400
+    -- 0.0400
 /
 -- WELSPECS
 -- INJ FIELD 1 1 1* GAS /
