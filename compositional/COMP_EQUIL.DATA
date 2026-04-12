@@ -89,11 +89,11 @@ ROCK
 
 ZMFVD
 -- depth  CO2  METHANE DECANE
- 2000   0 0.9 0.1
- 2100   0 0.1 0.9  /
+ 2000   0 0.7 0.3
+ 2100   0 0.3 0.7  /
 
 RTEMP
-150
+100
 /
 
 EOS
@@ -170,7 +170,7 @@ EQUIL
 -- datum  datum   WOC    WOC    GOC    GOC
 -- depth  press   depth  Pcow   depth  Pcog
 
-   2000     200    2300   0      2050     0     /
+   2000     150    2300   0      2050     0     /
 
 
 RPTSOL
@@ -219,7 +219,7 @@ INJ  1  1 20 20 OPEN 2* 0.0151 /
 PROD 20 1 1 1 OPEN 2* 0.0151 /
 /
 WCONINJE
-INJ GAS OPEN BHP 100000 1* 210 /
+INJ GAS OPEN BHP 100000 1* 160 /
 /
 
 WELLSTRE
@@ -231,7 +231,7 @@ INJ STREAM ISTR /
 /
 
 WCONPROD
-PROD OPEN BHP 5* 180/
+PROD OPEN BHP 5* 148/
 /
 
 TSTEP
@@ -247,6 +247,6 @@ TSTEP
     2*1.0000
     3*1.0000
     10*1.0
-    100*10.0
+    60*1.0
 /
 END
