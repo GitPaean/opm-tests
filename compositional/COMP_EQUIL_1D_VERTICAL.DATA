@@ -37,6 +37,9 @@ START
 REGDIMS
 1 1 0 0 /
 
+EQLDIMS
+/
+
 UNIFIN
 UNIFOUT
 ------------------------------------------------------------------------
@@ -169,7 +172,6 @@ SOLUTION
 EQUIL
 -- datum  datum   WOC    WOC    GOC    GOC
 -- depth  press   depth  Pcow   depth  Pcog
-
    2010     150    2300   0      2050     0     /
 
 RPTSOL
@@ -209,44 +211,7 @@ TSTEP
     0.0200
     -- 0.0400
     -- 0.0400
+    0.1
+    0.2
 /
--- WELSPECS
--- INJ FIELD 1 1 1* GAS /
--- PROD FIELD 5 1 1* GAS /
--- /
--- COMPDAT
--- INJ  1  1 20 20 OPEN 2* 0.0151 /
--- PROD 20 1 1 1 OPEN 2* 0.0151 /
--- /
--- WCONINJE
--- INJ GAS OPEN BHP 100000 1* 210 /
--- /
-
--- WELLSTRE
--- ISTR 1.0 0.0 0.0 /
--- /
-
--- WINJGAS
--- INJ STREAM ISTR /
--- /
-
--- WCONPROD
--- PROD OPEN BHP 5* 180/
--- /
-
--- TSTEP
---     0.0800
---     0.1600
---     0.3200
---     0.4400
---     0.8800
---     0.1200
---     1.0000
---     1.0000
---     1.0000
---     2*1.0000
---     3*1.0000
---     10*1.0
---     100*10.0
--- /
 END
