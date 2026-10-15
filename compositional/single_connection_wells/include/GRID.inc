@@ -20,9 +20,12 @@ DZ
 30*1
 /
 
+BOX
+1 30 1 1 1 1 /
 TOPS
 30*0
 /
+ENDBOX
 
 PERMX
 30*100
