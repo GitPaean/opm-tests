@@ -1,0 +1,218 @@
+-- This reservoir simulation deck is made available under the Open Database
+-- License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in
+-- individual contents of the database are licensed under the Database Contents
+-- License: http://opendatacommons.org/licenses/dbcl/1.0/
+
+-- Copyright (C) 2026, SINTEF Digital
+
+-- A row of ten oil cells produced from the last one, with a numerical aquifer
+-- of three cells attached to the first.  The aquifer cells lie below the
+-- water-oil contact, deepening away from the reservoir, and take their initial
+-- pressure from equilibration, so nothing flows until the producer draws the
+-- pressure down.  Water then moves along the row and reaches the producer.
+
+RUNSPEC
+
+TITLE
+COMPOSITIONAL NUMERICAL AQUIFER WITH A PRODUCER
+
+METRIC
+
+OIL
+GAS
+WATER
+
+DIMENS
+13 1 1 /
+
+COMPS
+3 /
+
+FULLIMP
+
+TABDIMS
+/
+
+EQLDIMS
+/
+
+WELLDIMS
+1 1 1 1 /
+
+AQUDIMS
+3 1 /
+
+START
+1 'JAN' 2020 /
+
+UNIFOUT
+
+GRID
+
+INIT
+
+DX
+13*25 /
+DY
+13*50 /
+DZ
+13*10 /
+TOPS
+13*2000 /
+
+PORO
+13*0.25 /
+PERMX
+13*200 /
+PERMY
+13*200 /
+PERMZ
+13*200 /
+
+-- Cells 11-13 become the aquifer.  The initial pressure is defaulted.
+AQUNUM
+-- ID  I  J K  AREA    LENGTH  PORO  PERM  DEPTH  PRESSURE
+   1   11 1 1  2.0E4   3000    0.25  50    2030   1* /
+   1   12 1 1  2.0E4   3000    0.25  50    2060   1* /
+   1   13 1 1  2.0E4   3000    0.25  50    2090   1* /
+/
+
+AQUCON
+-- ID  I1 I2 J1 J2 K1 K2  FACE
+   1   1  1  1  1  1  1   'I-' /
+/
+
+PROPS
+
+CNAMES
+CO2
+METHANE
+DECANE
+/
+
+EOS
+PR /
+
+BIC
+0
+0
+0
+/
+
+ACF
+0.22394
+0.01142
+0.4884
+/
+
+PCRIT
+73.773
+45.992
+21.03
+/
+
+TCRIT
+304.128
+190.564
+617.7
+/
+
+MW
+44.00
+16.04
+142.28
+/
+
+VCRIT
+0.09412
+0.09863
+0.60980
+/
+
+STCOND
+15.0 1.0 /
+
+DENSITY
+1* 1000.0 1* /
+
+PVTW
+200 1.0 4.0E-5 0.4 0.0 /
+
+ROCK
+200 5.0E-5 /
+
+SWOF
+0.2  0.0  1.0  0.0
+0.4  0.1  0.5  0.0
+0.6  0.3  0.2  0.0
+0.8  0.6  0.05 0.0
+1.0  1.0  0.0  0.0
+/
+
+SGOF
+0.0  0.0  1.0  0.0
+0.2  0.1  0.5  0.0
+0.4  0.3  0.2  0.0
+0.6  0.6  0.05 0.0
+0.8  1.0  0.0  0.0
+/
+
+RTEMP
+100 /
+
+ZMFVD
+1900  0.05 0.30 0.65
+2100  0.05 0.30 0.65 /
+
+SOLUTION
+
+EQUIL
+-- DATUM  PRESSURE  WOC   PCOW  GOC   PCOG
+   2005   200       2015  0     1900  0 /
+
+SUMMARY
+
+ALL
+
+ANQR
+1 /
+ANQT
+1 /
+ANQP
+1 /
+
+BPR
+1 1 1 /
+5 1 1 /
+10 1 1 /
+11 1 1 /
+13 1 1 /
+/
+
+BSWAT
+1 1 1 /
+5 1 1 /
+10 1 1 /
+/
+
+SCHEDULE
+
+RPTRST
+BASIC=2 PRESSURE SGAS SOIL SWAT XMF YMF ZMF /
+
+WELSPECS
+'P1' 'FIELD' 10 1 1* 'OIL' /
+/
+
+COMPDAT
+'P1' 10 1 1 1 'OPEN' 2* 0.2 /
+/
+
+WCONPROD
+'P1' 'OPEN' 'LRAT' 3* 50 1* 150 /
+/
+
+TSTEP
+50*10 /
+
+END

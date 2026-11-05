@@ -1,0 +1,228 @@
+-- This reservoir simulation deck is made available under the Open Database
+-- License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in
+-- individual contents of the database are licensed under the Database Contents
+-- License: http://opendatacommons.org/licenses/dbcl/1.0/
+
+-- Copyright (C) 2026, SINTEF Digital
+
+-- A 5x5 layer of oil with two numerical aquifers and a producer in the
+-- south-east corner (5,1).  The second layer is inactive and only holds the
+-- aquifer cells.
+--   Aquifer 1: three large cells on the west side (I- faces of I=1), starting
+--              20 bar above the equilibrium pressure.
+--   Aquifer 2: two small, tight cells on the north side (J+ faces of J=5),
+--              at the equilibrium pressure, connected with TRANS_OPTION 1 and
+--              a transmissibility multiplier of 0.5.
+
+RUNSPEC
+
+TITLE
+COMPOSITIONAL NUMERICAL AQUIFERS ON TWO SIDES
+
+METRIC
+
+OIL
+GAS
+WATER
+
+DIMENS
+5 5 2 /
+
+COMPS
+3 /
+
+FULLIMP
+
+TABDIMS
+/
+
+EQLDIMS
+/
+
+WELLDIMS
+1 1 1 1 /
+
+AQUDIMS
+5 2 /
+
+START
+1 'JAN' 2020 /
+
+UNIFOUT
+
+GRID
+
+INIT
+
+DX
+50*50 /
+DY
+50*50 /
+DZ
+50*10 /
+TOPS
+25*2000 /
+
+ACTNUM
+25*1 25*0 /
+
+PORO
+50*0.25 /
+PERMX
+50*200 /
+PERMY
+50*200 /
+PERMZ
+50*20 /
+
+AQUNUM
+-- ID  I J K  AREA    LENGTH  PORO  PERM  DEPTH  PRESSURE
+   1   1 1 2  1.0E4   2000    0.30  200   2020   220 /
+   1   3 1 2  1.0E4   2000    0.30  200   2030   220 /
+   1   5 1 2  1.0E4   2000    0.30  200   2040   220 /
+   2   1 5 2  5.0E3   500     0.20  20    2020   1* /
+   2   3 5 2  5.0E3   500     0.20  20    2030   1* /
+/
+
+AQUCON
+-- ID  I1 I2 J1 J2 K1 K2  FACE  TRANMULT  TRANS_OPTION
+   1   1  1  1  5  1  1   'I-'  1.0       0 /
+   2   1  5  5  5  1  1   'J+'  0.5       1 /
+/
+
+PROPS
+
+CNAMES
+CO2
+METHANE
+DECANE
+/
+
+EOS
+PR /
+
+BIC
+0
+0
+0
+/
+
+ACF
+0.22394
+0.01142
+0.4884
+/
+
+PCRIT
+73.773
+45.992
+21.03
+/
+
+TCRIT
+304.128
+190.564
+617.7
+/
+
+MW
+44.00
+16.04
+142.28
+/
+
+VCRIT
+0.09412
+0.09863
+0.60980
+/
+
+STCOND
+15.0 1.0 /
+
+DENSITY
+1* 1000.0 1* /
+
+PVTW
+200 1.0 4.0E-5 0.4 0.0 /
+
+ROCK
+200 5.0E-5 /
+
+SWOF
+0.2  0.0  1.0  0.0
+0.4  0.1  0.5  0.0
+0.6  0.3  0.2  0.0
+0.8  0.6  0.05 0.0
+1.0  1.0  0.0  0.0
+/
+
+SGOF
+0.0  0.0  1.0  0.0
+0.2  0.1  0.5  0.0
+0.4  0.3  0.2  0.0
+0.6  0.6  0.05 0.0
+0.8  1.0  0.0  0.0
+/
+
+RTEMP
+100 /
+
+ZMFVD
+1900  0.05 0.30 0.65
+2100  0.05 0.30 0.65 /
+
+SOLUTION
+
+EQUIL
+-- DATUM  PRESSURE  WOC   PCOW  GOC   PCOG
+   2005   200       2015  0     1900  0 /
+
+SUMMARY
+
+ALL
+
+ANQR
+1 2 /
+ANQT
+1 2 /
+ANQP
+1 2 /
+
+BPR
+1 1 1 /
+1 5 1 /
+3 3 1 /
+5 1 1 /
+5 5 1 /
+/
+
+BSWAT
+1 1 1 /
+1 5 1 /
+3 3 1 /
+5 1 1 /
+5 5 1 /
+/
+
+SCHEDULE
+
+RPTRST
+BASIC=2 PRESSURE SGAS SOIL SWAT XMF YMF ZMF /
+
+WELSPECS
+'P1' 'FIELD' 5 1 1* 'OIL' /
+/
+
+COMPDAT
+'P1' 5 1 1 1 'OPEN' 2* 0.2 /
+/
+
+WCONPROD
+'P1' 'OPEN' 'LRAT' 3* 100 1* 150 /
+/
+
+TSTEP
+60*10 /
+
+END
