@@ -10,8 +10,8 @@
 -- SWATINIT, per-cell endpoints (SWL, SWCR, SGL, SGU), rock compressibility
 -- and the usual transmissibility edits: MULTREGT between the fault blocks,
 -- EDITNNC on the fault's non-neighbour connections, and MULTIPLY on TRANX,
--- TRANY and TRANZ in the EDIT section.  The eastern block has the higher SWL,
--- and SGL 0.03 although its oil zone starts without free gas.
+-- TRANY and TRANZ in the EDIT section.  The eastern block has the higher SWL
+-- and SGL 0.03.
 --
 -- Above the water-oil contact SWATINIT lies halfway between SWL and SWCR,
 -- except in column (2,2), where it lies below SWL, and in the last ten
@@ -477,6 +477,8 @@ SWATINIT
   0.407 0.453 0.647 0.693 2*1.000 2*0.250 0.407 0.453
   0.647 0.693 2*1.000 /
 
+FILLEPS
+
 SWL
   4*0.100 4*0.140 4*0.100 4*0.140 4*0.100 4*0.140 4*0.100 4*0.140
   4*0.120 4*0.160 4*0.120 4*0.160 4*0.120 4*0.160 4*0.120 4*0.160
@@ -517,7 +519,7 @@ EQUIL
    2574   200       2624  0     2574  0 /
 
 RPTRST
-BASIC=2 PRESSURE SOIL SWAT SGAS XMF YMF ZMF /
+BASIC=2 PRESSURE SOIL SWAT SGAS PSAT XMF YMF ZMF /
 
 ------------------------------------------------------------------------
 SUMMARY

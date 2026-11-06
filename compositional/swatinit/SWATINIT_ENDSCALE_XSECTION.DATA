@@ -9,8 +9,7 @@
 -- water zone of a three-component oil saturated at its gas-oil contact,
 -- with SWATINIT, per-cell endpoints (SWL, SWCR, SGL, SGU) and rock
 -- compressibility.  SWL rises with depth and down dip, SWCR lies 0.10 or
--- 0.12 above it, SGL is 0.02 in the down-dip half, and SGU is 1 - SWL.  The
--- oil zone starts without free gas, also where SGL is positive.
+-- 0.12 above it, SGL is 0.02 in the down-dip half, and SGU is 1 - SWL.
 --
 -- Above the water-oil contact SWATINIT lies between SWL and SWCR, except in
 -- columns 3 and 14, where it lies below SWL, and in the last eight metres
@@ -209,6 +208,8 @@ SWATINIT
   0.470 0.530 0.590 0.650 0.710 5*1.000 0.200 0.254 0.140 0.254
   0.200 0.274 0.470 0.530 0.590 0.650 0.710 9*1.000 /
 
+FILLEPS
+
 SWL
   5*0.080 5*0.100 5*0.120 5*0.140 5*0.090 5*0.110 5*0.130 5*0.150 5*0.100 5*0.120
   5*0.140 5*0.160 5*0.110 5*0.130 5*0.150 5*0.170 5*0.120 5*0.140 5*0.160 5*0.180
@@ -254,7 +255,7 @@ EQUIL
    2574   200       2624  0     2574  0 /
 
 RPTRST
-BASIC=2 PRESSURE SOIL SWAT SGAS XMF YMF ZMF /
+BASIC=2 PRESSURE SOIL SWAT SGAS PSAT XMF YMF ZMF /
 
 ------------------------------------------------------------------------
 SUMMARY
