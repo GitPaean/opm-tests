@@ -1,0 +1,410 @@
+-- This reservoir simulation deck is made available under the Open Database
+-- License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in
+-- individual contents of the database are licensed under the Database Contents
+-- License: http://opendatacommons.org/licenses/dbcl/1.0/
+
+-- Copyright (C) 2026, SINTEF Digital, TNO
+
+-- EQUIL_1D_COMPVD_WATER_GASCAP with scaled end-points set group by group,
+-- to show how the equilibration takes the gas end-points SGL and SGU, and
+-- SWL and SWU with them.  Capillary pressure is zero, so the contacts are
+-- sharp: above the gas-oil contact at 2574 m lies the gas zone, between it
+-- and the water-oil contact at 2624 m the oil zone, and below that the water
+-- zone.  Cells not named keep the end-points of the saturation table, and
+-- FILLEPS writes the end-points of every cell to the INIT file.
+--
+-- Gas cap (1-24):
+--   1-3     no scaled end-points
+--   4-6     SGU 0.90, below 1 - SWL = 0.99
+--   7-9     SWL 0.20 and SGU 0.70, below 1 - SWL = 0.80
+--   10-12   SWL 0.15 and SGU 0.95, above 1 - SWL = 0.85
+--   13-15   SWL 0.25 with SGU from the table
+--   16-18   SWL 0.12 and SGU 0.88 = 1 - SWL
+--   19-21   SGL 0.05
+--   22-24   no scaled end-points
+-- Oil zone (25-34):
+--   25      SGL 0.05, next to the gas-oil contact
+--   26      no scaled end-points
+--   27-28   SGL 0.05
+--   29-30   SWL 0.20 and SGL 0.08
+--   31      no scaled end-points
+--   32-33   SWL 0.15
+--   34      no scaled end-points
+-- Water zone (35-40):
+--   35      no scaled end-points
+--   36      SGL 0.05 with SWU 1.0, so SGL exceeds 1 - SWU
+--   37-38   SWU 0.90
+--   39-40   SWU 0.90 and SGL 0.05
+-- SWCR is raised with SWL where SWL would exceed the table's 0.20.
+--
+-- GAS_ENDPOINTS_COLUMN_NO_SGL_SGU is the same column without SGL and SGU.
+-- There are no wells; the restart file at time zero holds the equilibrated
+-- saturations and phase compositions.
+
+------------------------------------------------------------------------
+RUNSPEC
+------------------------------------------------------------------------
+TITLE
+COMPOSITIONAL EQUILIBRATION WITH SCALED GAS END-POINTS
+METRIC
+
+TABDIMS
+/
+
+GAS
+OIL
+WATER
+
+DIMENS
+1 1 40 /
+
+COMPS
+7 /
+
+FULLIMP
+
+ENDSCALE
+/
+
+WELLDIMS
+2 2 1* 2/
+
+START
+  1 'JAN' 2016  /
+
+REGDIMS
+1 1 0 0 /
+
+EQLDIMS
+/
+
+UNIFIN
+UNIFOUT
+------------------------------------------------------------------------
+GRID
+------------------------------------------------------------------------
+INIT
+GRIDFILE
+0 1 /
+DX
+40*100 /
+
+DY
+40*100 /
+
+DZ
+  40*5 /
+
+BOX
+  1 1 1 1 1 1 /
+
+TOPS
+  1*2454 /
+
+ENDBOX
+
+PORO
+  40*0.3/
+
+PERMX
+  40*2000/
+
+PERMY
+  40*2000/
+
+PERMZ
+  40*2000/
+
+------------------------------------------------------------------------
+EDIT
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+PROPS
+------------------------------------------------------------------------
+
+CNAMES
+CH4  CO2  C2H6  C3H8  C4-C9 C10-C20  C21+
+/
+
+ROCK
+68.9476
+0
+/
+
+COMPVD
+-- depth  CH4  CO2  C2H6  C3H8  C4-C9 C10-C20  C21+
+
+2573.5	0.73779563 0.04261 0.122439 0.04501 0.04351  0.007502 0.0011211	0	277.56
+2574.5	0.41	0.045	0.105	0.0527	0.0951	0.0844	0.2078	1	277.76	/
+
+
+RTEMP
+100
+/
+
+EOS
+PR /
+
+BIC
+            1.0500000E-01
+            2.6890022E-03  1.3000000E-01
+            8.5370405E-03  1.2500000E-01  1.6620489E-03
+            2.2915937E-02  0.0000000E+00  1.0088696E-02  3.5952572E-03
+            5.4875390E-02  0.0000000E+00  3.4227722E-02  2.1174720E-02  7.4706799E-03
+            8.1972182E-02  0.0000000E+00  5.6906187E-02  4.0015457E-02  2.0180685E-02  3.1846386E-03
+/
+
+ACF
+8.0000000E-03  2.2500000E-01  9.8000000E-02  1.5200000E-01  2.5490000E-01
+5.5100000E-01  9.0900000E-01
+/
+PCRIT
+4.5400000E+01  7.2800000E+01  4.8200000E+01  4.1900000E+01  3.2400000E+01
+2.0420000E+01  1.4500000E+01
+/
+TCRIT
+190.6  304.2  3.0540000E+02  3.6980000E+02  4.7470000E+02
+6.4600000E+02  8.1200000E+02
+/
+MW
+ 1.6043000E+01  4.4010000E+01  3.0070000E+01  4.4097000E+01  7.6900000E+01
+1.6300000E+02  3.1085000E+02
+/
+
+VCRIT
+9.9000000E-02  9.4000000E-02  1.4800000E-01  2.0300000E-01  3.2321204E-01
+6.3255728E-01  9.7988801E-01
+/
+OMEGAA
+   0.4572400
+   0.4572400
+   0.4572400
+   0.4572400
+   0.4572356
+   0.4572355
+   0.4572356 /
+-- OmegaB
+OMEGAB
+   0.0778000
+   0.0778000
+   0.0778000
+   0.0778000
+   0.0777961
+   0.0777961
+   0.0777961 /
+
+TBOIL
+111.55
+194.55
+184.35
+230.95
+349.09
+490
+642
+/
+
+ZCRIT
+0.2876
+0.2736
+0.2789
+0.2763
+0.250711098445488
+0.23338268298063
+0.250420786731195
+/
+
+
+SSHIFT
+-0.1595
+-0.0817
+-0.1134
+-0.0863
+-0.0243568
+0.10784125400986
+0.206892761354429/
+
+SGFN
+--Sg Krg Pcg
+0.0 0.00 0.0
+0.1 0.00 0.0
+0.2 0.05 0.0
+0.4 0.10 0.0
+0.6 0.40 0.0
+0.8 0.60 0.0
+0.99 0.70 0.0
+/
+
+SWFN
+--Sw Krw Pcw
+0.01 0.0  0.0
+0.20 0.00 0.0
+0.40 0.01 0.0
+0.60 0.20 0.0
+0.80 0.80 0.0
+1.00 1.00 0.0
+/
+
+
+SOF3
+--So  Kro(o-w) Kro (o-g-wi)
+  0.0 0.00 0.0
+0.1 0.00 0.0
+0.2 0.05 0.05
+0.4 0.10 0.10
+0.6 0.40 0.40
+0.8 0.60 0.60
+0.99 0.70 0.70
+/
+
+STCOND
+15.0 1.0 /
+
+PVTW
+--     Pref          Bw            Cw            Vw           Cvw
+--  BARSA         RM3/SM3       1/BARS        CPOISE        1/BARS
+     200.00000       1.00735   4.80809E-05       0.54620   6.80341E-05
+ /
+
+FILLEPS
+
+EQUALS
+-- array   value   I1 I2 J1 J2 K1 K2
+   'SGU'  0.90   1 1  1 1   4  6 /
+   'SWL'  0.20   1 1  1 1   7  9 /
+   'SWCR' 0.25   1 1  1 1   7  9 /
+   'SGU'  0.70   1 1  1 1   7  9 /
+   'SWL'  0.15   1 1  1 1  10 12 /
+   'SGU'  0.95   1 1  1 1  10 12 /
+   'SWL'  0.25   1 1  1 1  13 15 /
+   'SWCR' 0.30   1 1  1 1  13 15 /
+   'SWL'  0.12   1 1  1 1  16 18 /
+   'SGU'  0.88   1 1  1 1  16 18 /
+   'SGL'  0.05   1 1  1 1  19 21 /
+   'SGL'  0.05   1 1  1 1  25 25 /
+   'SGL'  0.05   1 1  1 1  27 28 /
+   'SWL'  0.20   1 1  1 1  29 30 /
+   'SWCR' 0.25   1 1  1 1  29 30 /
+   'SGL'  0.08   1 1  1 1  29 30 /
+   'SWL'  0.15   1 1  1 1  32 33 /
+   'SGL'  0.05   1 1  1 1  36 36 /
+   'SWU'  0.90   1 1  1 1  37 40 /
+   'SGL'  0.05   1 1  1 1  39 40 /
+/
+
+------------------------------------------------------------------------
+SOLUTION
+------------------------------------------------------------------------
+
+RPTRST
+BASIC=2 PRESSURE SOIL SWAT SGAS PSAT XMF YMF ZMF DENO DENG /
+
+EQUIL
+2574.5 277 2624 0 2574 0 3* 1 1 /
+
+RPTSOL
+PRESSURE SOIL SWAT SGAS PSAT XMF YMF ZMF FIP=2 /
+
+------------------------------------------------------------------------
+SUMMARY
+------------------------------------------------------------------------
+FPR
+FOIP
+FGIP
+FWIP
+
+BPR
+ 1 1 1 /
+ 1 1 4 /
+ 1 1 7 /
+ 1 1 10 /
+ 1 1 13 /
+ 1 1 16 /
+ 1 1 19 /
+ 1 1 22 /
+ 1 1 25 /
+ 1 1 26 /
+ 1 1 27 /
+ 1 1 29 /
+ 1 1 31 /
+ 1 1 32 /
+ 1 1 35 /
+ 1 1 36 /
+ 1 1 37 /
+ 1 1 39 /
+/
+
+BSWAT
+ 1 1 1 /
+ 1 1 4 /
+ 1 1 7 /
+ 1 1 10 /
+ 1 1 13 /
+ 1 1 16 /
+ 1 1 19 /
+ 1 1 22 /
+ 1 1 25 /
+ 1 1 26 /
+ 1 1 27 /
+ 1 1 29 /
+ 1 1 31 /
+ 1 1 32 /
+ 1 1 35 /
+ 1 1 36 /
+ 1 1 37 /
+ 1 1 39 /
+/
+
+BSGAS
+ 1 1 1 /
+ 1 1 4 /
+ 1 1 7 /
+ 1 1 10 /
+ 1 1 13 /
+ 1 1 16 /
+ 1 1 19 /
+ 1 1 22 /
+ 1 1 25 /
+ 1 1 26 /
+ 1 1 27 /
+ 1 1 29 /
+ 1 1 31 /
+ 1 1 32 /
+ 1 1 35 /
+ 1 1 36 /
+ 1 1 37 /
+ 1 1 39 /
+/
+
+BSOIL
+ 1 1 1 /
+ 1 1 4 /
+ 1 1 7 /
+ 1 1 10 /
+ 1 1 13 /
+ 1 1 16 /
+ 1 1 19 /
+ 1 1 22 /
+ 1 1 25 /
+ 1 1 26 /
+ 1 1 27 /
+ 1 1 29 /
+ 1 1 31 /
+ 1 1 32 /
+ 1 1 35 /
+ 1 1 36 /
+ 1 1 37 /
+ 1 1 39 /
+/
+
+------------------------------------------------------------------------
+SCHEDULE
+------------------------------------------------------------------------
+RPTRST
+BASIC=2 PRESSURE SOIL SWAT SGAS PSAT XMF YMF ZMF /
+
+TSTEP
+0.01 0.02 0.1 0.2 1.0 2.0 /
+
+END
