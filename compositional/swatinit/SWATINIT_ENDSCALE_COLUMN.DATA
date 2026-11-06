@@ -129,6 +129,12 @@ VCRIT
   0.099       0.094       0.148  0.203  0.32321204
   0.63255728  0.97988801
 /
+
+-- Neutral multiplier: single-phase cells are labelled by the unscaled Li
+-- critical temperature.
+FACTLI
+ 1*1.0 /
+
 OMEGAA
   0.45724
   0.45724

@@ -131,6 +131,11 @@ VCRIT
 0.60980
 /
 
+-- Neutral multiplier: single-phase cells are labelled by the unscaled Li
+-- critical temperature.
+FACTLI
+ 1*1.0 /
+
 RTEMP
 100 /
 
